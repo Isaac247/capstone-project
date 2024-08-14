@@ -54,3 +54,6 @@ EKS cluster created successfullly
  ```
  ![img4](images/change_ns-and%20-check_pods_and-svc.PNG)
   
+### Step 3: Monitoring and Logging using Ingress Nginix controller
+For the monitoring and logging aspect, helm was used to install prometheus and grafana chart respectively
+1. 
