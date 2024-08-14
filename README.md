@@ -20,13 +20,13 @@ Using Terraform, necessary resources such as VPCs, subnets, S3 buckets, security
   terraform plan
   ~~~
 4. Run the terraform apply command
-  ~~
+  ~~~
   terraform apply --auto-approve
   ~~~   
 
 
 ![img1](images/cluster-creation-cli.PNG)  
 creation process of the EKS cluster  
-   
-![img2](images/cluster-creation-aws.PNG)
+
+![img2](/home/mamman/project/images/cluster-creation-aws.PNG)
 EKS cluster created successfullly
