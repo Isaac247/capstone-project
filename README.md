@@ -28,5 +28,29 @@ Using Terraform, necessary resources such as VPCs, subnets, S3 buckets, security
 ![img1](images/cluster-creation-cli.PNG)  
 creation process of the EKS cluster  
 
-![img2](/home/mamman/project/images/cluster-creation-aws.PNG)
-EKS cluster created successfullly
+![img2](images/cluster-creation-aws.PNG)
+EKS cluster created successfullly  
+
+### Step 2: Deploying manifest file to the EKS cluster created  
+1. Move to kubernetes directory 
+ ```
+ cd kubernetes/
+ ```
+2. Configure Kubectl to connect to the Eks cluster 
+ ```
+ aws eks update-kubeconfig -name=socks-shop-cluster --region=us-east-2
+ ```  
+ ![img3](images/configure_eks_to_kubectl.PNG)
+3. Apply deployment manifest file to the EKS cluster just created
+ ```
+ kubectl apply -f socks_shop_deployment.yaml
+ ```  
+4. After deployment is successful, create a new name space called "sock-shop" because the manifest was deployed there   
+
+5. Run this commands to get the pods and services runing on the Eks cluster
+ ```
+ kubectl get pods
+ kubectl get svc
+ ```
+ ![img4](images/change_ns-and%20-check_pods_and-svc.PNG)
+  
