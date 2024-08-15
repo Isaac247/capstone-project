@@ -56,4 +56,58 @@ EKS cluster created successfullly
   
 ### Step 3: Monitoring and Logging using Ingress Nginix controller
 For the monitoring and logging aspect, helm was used to install prometheus and grafana chart respectively
-1. 
+1. Install nginix chart using helm
+ ```
+ helm install inginix
+ helm
+ ```
+2. Create a rule to serve the frontend of the socks shop application assigning the service name and port number 
+ ```
+  - host: socks.isaacmamman.me
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: front-end
+                port:
+                  number: 80
+ ```
+ ![img5](images/frontend.PNG)
+3. Install prometheus chart using helm
+ ```
+ helm install
+ ```
+4. Create a rule to serve prometheus service assigning the service name and port number
+ ```
+ - host: grafana.isaacmamman.me
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: prometheus-grafana
+                port:
+                  number: 80
+ ```
+ ![img6](images/prometheusui.PNG)
+5. Install grafana chart using helm
+ ```
+ helm install 
+ ```
+6. Create a rule to serve prometheus service assigning the service name and port number
+ ```
+ - host: prometheus.isaacmamman.me
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: prometheus-kube-prometheus-prometheus
+                port:
+                  number: 9090
+ ```
+![img7](images/grafana.PNG)
