@@ -58,9 +58,11 @@ EKS cluster created successfullly
 For the monitoring and logging aspect, helm was used to install prometheus and grafana chart respectively
 1. Install nginix chart using helm
  ```
- helm install inginix
- helm
+ helm repo add nginx-stable https://helm.nginx.com/stable
+ helm repo update
+ helm install nginx-stable/nginx-ingress
  ```
+ ![img8](images/helm_ingress_install.PNG)
 2. Create a rule to serve the frontend of the socks shop application assigning the service name and port number 
  ```
   - host: socks.isaacmamman.me
@@ -77,7 +79,9 @@ For the monitoring and logging aspect, helm was used to install prometheus and g
  ![img5](images/frontend.PNG)
 3. Install prometheus chart using helm
  ```
- helm install
+ helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+ helm repo update
+ helm install prometheus prometheus-community/prometheus
  ```
 4. Create a rule to serve prometheus service assigning the service name and port number
  ```
@@ -95,7 +99,9 @@ For the monitoring and logging aspect, helm was used to install prometheus and g
  ![img6](images/prometheusui.PNG)
 5. Install grafana chart using helm
  ```
- helm install 
+helm repo add grafana https://grafana.github.io/helm-charts 
+helm repo update
+helm install grafana grafana/grafana
  ```
 6. Create a rule to serve prometheus service assigning the service name and port number
  ```
