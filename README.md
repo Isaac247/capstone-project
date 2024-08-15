@@ -1,4 +1,5 @@
 # Socks shop Microservice-based Application Deployment on Kubernetes Using IaC(Terraform)
+![img9](images/Blank%20diagram%20(1).png)
 ## Overview  
 Deploying a microservices-based architecture application on Kubernetes using a clear IaC (Infrastructure as Code) deployment to be able to deploy the services in a fast manner.  
 ## Getting started 
