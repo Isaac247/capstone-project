@@ -70,7 +70,7 @@ For the monitoring and logging aspect, helm was used to install prometheus and g
  helm install nginx-stable/nginx-ingress
  ```
  ![img8](images/helm_ingress_install.PNG)
- Sock shop frontend
+ 
 2. Create a rule to serve the frontend of the socks shop application exposing the service name and port number in the ingress manifest file 
  ```
   - host: socks.isaacmamman.me
@@ -85,6 +85,7 @@ For the monitoring and logging aspect, helm was used to install prometheus and g
                   number: 80
  ```
  ![img5](images/frontend.PNG)
+ Sock shop frontend
 3. Install prometheus chart using helm
  ```
  helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
