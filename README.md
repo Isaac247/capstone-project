@@ -63,7 +63,7 @@ For the monitoring and logging aspect, helm was used to install prometheus and g
  helm install nginx-stable/nginx-ingress
  ```
  ![img8](images/helm_ingress_install.PNG)
-2. Create a rule to serve the frontend of the socks shop application assigning the service name and port number 
+2. Create a rule to serve the frontend of the socks shop application exposing the service name and port number 
  ```
   - host: socks.isaacmamman.me
       http:
@@ -83,7 +83,7 @@ For the monitoring and logging aspect, helm was used to install prometheus and g
  helm repo update
  helm install prometheus prometheus-community/prometheus
  ```
-4. Create a rule to serve prometheus service assigning the service name and port number
+4. Create a rule to serve prometheus service exposing the service name and port number
  ```
  - host: grafana.isaacmamman.me
       http:
@@ -103,7 +103,7 @@ helm repo add grafana https://grafana.github.io/helm-charts
 helm repo update
 helm install grafana grafana/grafana
  ```
-6. Create a rule to serve prometheus service assigning the service name and port number
+6. Create a rule to serve prometheus service exposing the service name and port number
  ```
  - host: prometheus.isaacmamman.me
       http:
