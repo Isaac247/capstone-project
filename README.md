@@ -1,12 +1,18 @@
 # Socks shop Microservice-based Application Deployment on Kubernetes Using IaC(Terraform)
 ![img9](images/Blank%20diagram%20(1).png)
 ## Overview  
-Deploying a microservices-based architecture application on Kubernetes using a clear IaC (Infrastructure as Code) deployment to be able to deploy the services in a fast manner.  
+Deploying a microservice-based architecture application on Kubernetes using a clear IaC (Infrastructure as Code) deployment to be able to deploy the services in a fast manner.  
+## Requirements
+* AWS Account configured on an AWS CLI
+* Helm Installed
+* Terraform installed and configured to an AWS account
+* Domain name
+* Kubernetes installed
 ## Getting started 
 
 ### Step 1: Infrastructure Provisioning
 Using Terraform, necessary resources such as VPCs, subnets, S3 buckets, security groups and an EKS cluster will be provisioned using terraform 
-1. Create a new directory and clone this repo in it 
+1. Create a new directory and clone this repo 
   ~~~  
   git clone https://github.com/Isaac247/capstone-project.git
   ~~~
@@ -27,7 +33,7 @@ Using Terraform, necessary resources such as VPCs, subnets, S3 buckets, security
 
 
 ![img1](images/cluster-creation-cli.PNG)  
-creation process of the EKS cluster  
+Creation process of the EKS cluster  
 
 ![img2](images/cluster-creation-aws.PNG)
 EKS cluster created successfullly  
@@ -57,14 +63,15 @@ EKS cluster created successfullly
   
 ### Step 3: Monitoring and Logging using Ingress Nginix controller
 For the monitoring and logging aspect, helm was used to install prometheus and grafana chart respectively
-1. Install nginix chart using helm
+1. Install nginx chart using helm
  ```
  helm repo add nginx-stable https://helm.nginx.com/stable
  helm repo update
  helm install nginx-stable/nginx-ingress
  ```
  ![img8](images/helm_ingress_install.PNG)
-2. Create a rule to serve the frontend of the socks shop application exposing the service name and port number 
+ Sock shop frontend
+2. Create a rule to serve the frontend of the socks shop application exposing the service name and port number in the ingress manifest file 
  ```
   - host: socks.isaacmamman.me
       http:
@@ -84,7 +91,7 @@ For the monitoring and logging aspect, helm was used to install prometheus and g
  helm repo update
  helm install prometheus prometheus-community/prometheus
  ```
-4. Create a rule to serve prometheus service exposing the service name and port number
+4. Create a rule to serve prometheus service exposing the service name and port number in the ingress manifest file
  ```
  - host: grafana.isaacmamman.me
       http:
@@ -104,7 +111,7 @@ helm repo add grafana https://grafana.github.io/helm-charts
 helm repo update
 helm install grafana grafana/grafana
  ```
-6. Create a rule to serve prometheus service exposing the service name and port number
+6. Create a rule to serve prometheus service exposing the service name and port number in the ingress manifest file
  ```
  - host: prometheus.isaacmamman.me
       http:
@@ -118,3 +125,4 @@ helm install grafana grafana/grafana
                   number: 9090
  ```
 ![img7](images/grafana.PNG)
+Monitoring
