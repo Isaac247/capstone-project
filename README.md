@@ -9,8 +9,9 @@ Deploying a microservice-based architecture application on Kubernetes using a cl
 * Domain name
 * Kubernetes installed
 ## Getting started 
-
-### Step 1: Infrastructure Provisioning
+### Step 1: CI/CD pipeline
+For the continous integration and deployment aspect, 2 pipelines were created to handle terraform infrastructure provisioning and the other to handle the kubernetes aspect so as to stop the reoccurence of provisioning aws resources after every action 
+### Step 2: Infrastructure Provisioning
 Using Terraform, necessary resources such as VPCs, subnets, S3 buckets, security groups and an EKS cluster will be provisioned using terraform 
 1. Create a new directory and clone this repo 
   ~~~  
@@ -38,14 +39,14 @@ Creation process of the EKS cluster
 ![img2](images/cluster-creation-aws.PNG)
 EKS cluster created successfullly  
 
-### Step 2: Deploying manifest file to the EKS cluster created  
+### Step 3: Deploying manifest file to the EKS cluster created  
 1. Move to kubernetes directory 
  ```
  cd kubernetes/
  ```
 2. Configure Kubectl to connect to the Eks cluster 
  ```
- aws eks update-kubeconfig -name=socks-shop-cluster --region=us-east-2
+ aws eks update-kubeconfig -name=socks-shop-cluster --region=us-east-1
  ```  
  ![img3](images/configure_eks_to_kubectl.PNG)
 3. Apply deployment manifest file to the EKS cluster just created
@@ -61,8 +62,8 @@ EKS cluster created successfullly
  ```
  ![img4](images/change_ns-and%20-check_pods_and-svc.PNG)
   
-### Step 3: Monitoring and Logging using Ingress Nginix controller
-For the monitoring and logging aspect, helm was used to install prometheus and grafana chart respectively
+### Step 4: Monitoring and Logging using Ingress Nginix controller
+For the monitoring and logging aspect, helm was used to install prometheus and grafana chart respectively. 
 1. Install nginx chart using helm
  ```
  helm repo add nginx-stable https://helm.nginx.com/stable
@@ -71,7 +72,8 @@ For the monitoring and logging aspect, helm was used to install prometheus and g
  ```
  ![img8](images/helm_ingress_install.PNG)
  
-2. Create a rule to serve the frontend of the socks shop application exposing the service name and port number in the ingress manifest file 
+2. Create an **A record** on Route53 to map the ingress external IP address to a domain name. Also, create a **CNAME** rcord that will serve the other services (prometheus and grafana)  
+3. Create a rule to serve the frontend of the socks shop application exposing the service name and port number in the ingress manifest file 
  ```
   - host: socks.isaacmamman.me
       http:
@@ -86,13 +88,13 @@ For the monitoring and logging aspect, helm was used to install prometheus and g
  ```
  ![img5](images/frontend.PNG)
  Sock shop frontend
-3. Install prometheus chart using helm
+4. Install prometheus chart using helm
  ```
  helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
  helm repo update
  helm install prometheus prometheus-community/prometheus
  ```
-4. Create a rule to serve prometheus service exposing the service name and port number in the ingress manifest file
+5. Create a rule to serve prometheus service exposing the service name and port number in the ingress manifest file
  ```
  - host: grafana.isaacmamman.me
       http:
@@ -106,13 +108,13 @@ For the monitoring and logging aspect, helm was used to install prometheus and g
                   number: 80
  ```
  ![img6](images/prometheusui.PNG)
-5. Install grafana chart using helm
+6. Install grafana chart using helm
  ```
 helm repo add grafana https://grafana.github.io/helm-charts 
 helm repo update
 helm install grafana grafana/grafana
  ```
-6. Create a rule to serve prometheus service exposing the service name and port number in the ingress manifest file
+7. Create a rule to serve prometheus service exposing the service name and port number in the ingress manifest file
  ```
  - host: prometheus.isaacmamman.me
       http:

@@ -1,51 +1,45 @@
-
-
-name: 'Terraform'
-
+name: terraform
 on:
+  # Triggers the workflow on push or pull request events but only for the "terraform" branch
   push:
     branches: [ "terraform" ]
-  pull_request:
-
-permissions:
-  contents: read
-
+  workflow_dispatch:
 jobs:
-  terraform:
-    name: 'Terraform'
+  # This workflow contains a single job called "build"
+  build:
     runs-on: ubuntu-latest
-    environment: production
 
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
-    defaults:
-      run:
-        shell: bash
-
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v4
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
 
-    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{vars.REGION}}
 
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    - name: Terraform Init
-      run: terraform init
+      - name: Create s3 bucket
+        run: aws s3 mb s3://izikcapstoneproject24
 
-    # Checks that all Terraform configuration files adhere to a canonical format
-    - name: Terraform Format
-      run: terraform fmt -check
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
 
-    # Generates an execution plan for Terraform
-    - name: Terraform Plan
-      run: terraform plan -input=false
+      - name: Install helm
+        uses: azure/setup-helm@v4.2.0
 
-      # On push to "master", build or change infrastructure according to Terraform configuration files
-      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
-    - name: Terraform Apply
-      if: github.ref == 'refs/heads/"master"' && github.event_name == 'push'
-      run: terraform apply -auto-approve -input=false
+      - name: setup terraform
+        uses: hashicorp/setup-terraform@v2
+# create cluster   
+      - name: Create EKS cluster
+        run: |
+          terraform -chdir=terraform/ init
+          terraform -chdir=terraform apply --auto-approve
+# update kubeconfig file to match eks cluster created
+      - name: Update kubeconfig 
+        run: |
+          aws eks update-kubeconfig -name=socks-shop-cluster --region=us-east-1
+          kubectl create namespace sock-shop
+          
